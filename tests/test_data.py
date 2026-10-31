@@ -3,7 +3,7 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from olfacto.data import get_label_columns, load_odor_dataset
+from olfacto.data import get_label_columns, load_odor_dataset, make_splits
 
 DATA_PATH = Path(__file__).resolve().parents[1] / "data" / "curated_GS_LF_merged_4983.csv"
 
@@ -75,3 +75,34 @@ def test_rejects_wrong_schema(tmp_path):
     pd.DataFrame({"a": [1], "b": [2]}).to_csv(path, index=False)
     with pytest.raises(ValueError, match="columns"):
         load_odor_dataset(path)
+
+
+def test_make_splits_assigns_every_row_once():
+    df = load_odor_dataset(DATA_PATH)
+    split = make_splits(df, n_splits=5, seed=42)
+
+    assert len(split) == len(df)
+    assert set(split["fold"]) == {0, 1, 2, 3, 4}
+    assert not split["fold"].isna().any()
+    assert split["fold"].value_counts().min() >= int(0.18 * len(df))
+
+
+def test_rare_label_present_in_every_fold():
+    df = load_odor_dataset(DATA_PATH)
+    split = make_splits(df, n_splits=5, seed=42)
+
+    per_fold = split.groupby("fold")["chamomile"].sum()
+    assert (per_fold > 0).all(), per_fold.to_dict()
+
+
+def test_splits_are_deterministic():
+    df = load_odor_dataset(DATA_PATH)
+    first = make_splits(df, n_splits=5, seed=42)["fold"].tolist()
+    second = make_splits(df, n_splits=5, seed=42)["fold"].tolist()
+    assert first == second
+
+
+def test_invalid_n_splits_raises():
+    df = load_odor_dataset(DATA_PATH)
+    with pytest.raises(ValueError, match="n_splits"):
+        make_splits(df, n_splits=1)
