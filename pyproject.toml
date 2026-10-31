@@ -38,6 +38,14 @@ Model = "https://huggingface.co/SamuelCagnani/olfacto-chemberta-138"
 [tool.hatch.build.targets.wheel]
 packages = ["src/olfacto"]
 
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
+
 [tool.ruff]
 line-length = 100
 target-version = "py310"
@@ -48,3 +56,4 @@ select = ["E", "F", "I", "UP", "B"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
+markers = ["slow: long-running tests (set RUN_SLOW=1 to enable)"]

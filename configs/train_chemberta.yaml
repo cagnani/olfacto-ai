@@ -1,0 +1,14 @@
+model_name: DeepChem/ChemBERTa-77M-MLM
+max_length: 128
+batch_size: 32
+learning_rate: 5.0e-5
+epochs: 10
+warmup_ratio: 0.1
+weight_decay: 0.01
+pos_weight_cap: 20.0
+early_stopping_patience: 3
+val_min_positives: 5
+seed: 42
+fold: null
+output_dir: outputs/chemberta
+num_workers: 0
