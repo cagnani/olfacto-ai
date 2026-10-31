@@ -1,0 +1,8 @@
+git+https://github.com/cagnani/olfacto-ai.git
+torch
+transformers
+gradio>=4.44
+rdkit
+pandas
+numpy
+huggingface_hub
