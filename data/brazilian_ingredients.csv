@@ -1,0 +1,41 @@
+name_pt,name_en,category,pubchem_name,smiles,note
+Café,Coffee,bebida,Furaneol,CC1C(=O)C(=C(O1)C)O,caramelo e torra
+Café torrado,Coffee,bebida,Guaiacol,COC1=CC=CC=C1O,defumado
+Cachaça,Cachaça,bebida,Ethyl acetate,CCOC(=O)C,frutado e solvente
+Cachaça envelhecida,Cachaça,bebida,Isoamyl acetate,CC(C)CCOC(=O)C,banana
+Cerveja,Beer,bebida,Isoamyl acetate,CC(C)CCOC(=O)C,banana
+Guaraná,Guaraná,fruta,Caffeine,CN1C=NC2=C1C(=O)N(C(=O)N2C)C,amargo
+Açaí,Açaí,fruta,Hexanal,CCCCCC=O,verde
+Cupuaçu,Cupuaçu,fruta,Ethyl butanoate,CCCC(=O)OCC,frutado
+Maracujá,Passion fruit,fruta,Hexyl acetate,CCCCCCOC(=O)C,frutado verde
+Abacaxi,Pineapple,fruta,Ethyl hexanoate,CCCCCC(=O)OCC,frutado
+Manga,Mango,fruta,Terpinolene,CC1=CCC(=C(C)C)CC1,resinoso
+Goiaba,Guava,fruta,(E)-2-Hexenal,CCC/C=C/C=O,verde
+Caju,Cashew apple,fruta,Decanal,CCCCCCCCCC=O,cítrico
+Coco,Coconut,fruta,gamma-Decalactone,CCCCCCC1CCC(=O)O1,cremoso
+Castanha-do-pará,Brazil nut,castanha,Maltol,CC1=C(C(=O)C=CO1)O,caramelo
+Pimenta-do-reino,Black pepper,especiaria,Piperine,C1CCN(CC1)C(=O)/C=C/C=C/C2=CC3=C(C=C2)OCO3,picante
+Alho,Garlic,tempero,Allicin,C=CCSS(=O)CC=C,sulfuroso
+Cebola,Onion,tempero,Propanethial S-oxide,CCC=S=O,sulfuroso
+Canela,Cinnamon,especiaria,Cinnamaldehyde,C1=CC=C(C=C1)/C=C/C=O,especiado
+Cravo,Clove,especiaria,Eugenol,COC1=C(C=CC(=C1)CC=C)O,especiado
+Baunilha,Vanilla,especiaria,Vanillin,COC1=C(C=CC(=C1)C=O)O,baunilha
+Cacau,Cocoa,doce,"2,3,5-Trimethylpyrazine",CC1=CN=C(C(=N1)C)C,torrado
+Chocolate,Chocolate,doce,Furaneol,CC1C(=O)C(=C(O1)C)O,caramelo
+Laranja,Orange,fruta,Limonene,CC1=CCC(CC1)C(=C)C,cítrico
+Limão,Lime,fruta,Citral,CC(=CCC/C(=C/C=O)/C)C,cítrico
+Tangerina,Tangerine,fruta,gamma-Terpinene,CC1=CCC(=CC1)C(C)C,cítrico
+Uva,Grape,fruta,Methyl anthranilate,COC(=O)C1=CC=CC=C1N,frutado
+Vinho,Wine,bebida,beta-Damascenone,C/C=C/C(=O)C1=C(C=CCC1(C)C)C,frutado
+Mel,Honey,doce,Phenylacetaldehyde,C1=CC=C(C=C1)CC=O,floral
+Erva-doce,Fennel,especiaria,Anethole,C/C=C/C1=CC=C(C=C1)OC,anisado
+Hortelã,Mint,erva,Menthol,CC1CCC(C(C1)O)C(C)C,refrescante
+Manjericão,Basil,erva,Linalool,CC(=CCCC(C)(C=C)O)C,floral
+Coentro,Coriander,erva,Decanal,CCCCCCCCCC=O,cítrico
+Camomila,Chamomile,erva,Bisabolol,CC1=CC[C@@H](CC1)[C@@](C)(CCC=C(C)C)O,floral
+Jasmim,Jasmine,flor,Benzyl acetate,CC(=O)OCC1=CC=CC=C1,floral
+Rosa,Rose,flor,Rose oxide,CC1CCOC(C1)C=C(C)C,floral
+Yerba mate,Yerba mate,bebida,2-Methylbutanal,CCC(C)C=O,verde
+Pequi,Pequi,fruta,Ethyl hexanoate,CCCCCC(=O)OCC,frutado
+Jabuticaba,Jabuticaba,fruta,Hexanal,CCCCCC=O,verde
+Pitanga,Pitanga,fruta,Geraniol,CC(=CCC/C(=C/CO)/C)C,floral
