@@ -72,3 +72,4 @@ def test_fit_smoke(tmp_path):
     assert np.isfinite(metrics["history"][0]["train_loss"])
     assert (tmp_path / "model" / "metrics.json").is_file()
     assert (tmp_path / "model" / "config.json").is_file()
+    assert (tmp_path / "model" / "labels.json").is_file()

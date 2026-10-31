@@ -123,6 +123,9 @@ def fit(config: TrainConfig, train_df: pd.DataFrame, val_df: pd.DataFrame) -> di
     output_dir.mkdir(parents=True, exist_ok=True)
 
     label_columns = get_label_columns(train_df)
+    (output_dir / "labels.json").write_text(
+        json.dumps(label_columns, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
     y_train = train_df[label_columns].to_numpy(dtype=np.float32)
     y_val = val_df[label_columns].to_numpy(dtype=np.float32)
 
