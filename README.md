@@ -50,6 +50,24 @@ for prediction in predictor.predict("CCO", top_k=5):
     print(f"{prediction.label_pt_br}: {prediction.probability:.2f}")
 ```
 
+## Resultados
+
+Validação cruzada de 5 folds, um modelo por fold, métricas out-of-fold:
+
+| Métrica | Valor |
+|---|---|
+| ROC-AUC macro | **0.7516** |
+| IC 95% (bootstrap) | [0.7465, 0.7574] |
+| ROC-AUC micro | 0.8402 |
+| PR-AUC macro | 0.1085 |
+| AUC por fold | 0.7547 ± 0.0043 |
+
+O baseline do OpenPOM é **0.8872** (5-fold CV, ensemble de 10 MPNNs). A comparação é uma
+ablation, não uma disputa: o Olfacto é um modelo único e menor, treinado em hardware
+gratuito. Por rótulo, o modelo vai bem em notas sulfurosas (alho 0.971, cebola 0.967) e mal
+em frutas finas (morango 0.461, uva 0.508). Tabela completa em
+[`docs/results.md`](docs/results.md).
+
 ## Reproduzir o treino
 
 ```bash
