@@ -19,6 +19,7 @@ DATASET_FILES = {
     "curated_GS_LF_merged_4983.csv": "curated_GS_LF_merged_4983.csv",
     "odor_labels_ptbr.json": "odor_labels_ptbr.json",
     "brazilian_ingredients.csv": "brazilian_ingredients.csv",
+    "map.csv": "map.csv",
 }
 
 
