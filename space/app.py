@@ -97,7 +97,7 @@ def predict_ingredient(name: str, top_k: int):
     )
 
 
-with gr.Blocks(title="Olfacto AI", theme=gr.themes.Soft()) as demo:
+with gr.Blocks(title="Olfacto AI") as demo:
     gr.Markdown(
         "# Olfacto AI\n"
         "Do SMILES ao aroma, em português. Modelo aberto de predição de odor molecular "
