@@ -1,0 +1,50 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "olfacto"
+version = "0.1.0"
+description = "Open molecular odor prediction with a Brazilian Portuguese interface"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Samuel Cagnani", email = "samuelcagnani0@gmail.com" }]
+keywords = ["odor", "olfaction", "cheminformatics", "chemistry", "machine-learning"]
+dependencies = [
+    "numpy>=1.26",
+    "pandas>=2.2",
+    "scikit-learn>=1.4",
+    "iterative-stratification>=0.1.9",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+train = [
+    "torch>=2.2",
+    "transformers>=4.40",
+    "datasets>=2.19",
+    "accelerate>=0.30",
+]
+chem = ["rdkit>=2024.3"]
+app = ["gradio>=4.44", "rdkit>=2024.3", "umap-learn>=0.5"]
+dev = ["pytest>=8.0", "pytest-cov>=5.0", "ruff>=0.6"]
+
+[project.urls]
+Homepage = "https://github.com/cagnani/olfacto-ai"
+Dataset = "https://huggingface.co/datasets/SamuelCagnani/olfacto-odor-138-ptbr"
+Model = "https://huggingface.co/SamuelCagnani/olfacto-chemberta-138"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/olfacto"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
