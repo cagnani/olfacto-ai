@@ -34,6 +34,9 @@ def main() -> int:
     parser.add_argument("--data-dir", type=Path, default=Path("data"))
     parser.add_argument("--model-id", default=MODEL_ID)
     parser.add_argument("--dataset-id", default=DATASET_ID)
+    parser.add_argument("--space-id", default="SamuelCagnani/olfacto")
+    parser.add_argument("--space-dir", type=Path, default=Path("space"))
+    parser.add_argument("--skip-space", action="store_true")
     parser.add_argument("--token", default=os.environ.get("HF_TOKEN"))
     parser.add_argument(
         "--write-cards",
@@ -102,6 +105,16 @@ def main() -> int:
         repo_type="dataset",
     )
     print(f"dataset published: https://huggingface.co/datasets/{args.dataset_id}")
+
+    if not args.skip_space:
+        api.create_repo(args.space_id, repo_type="space", space_sdk="gradio", exist_ok=True)
+        api.upload_folder(
+            folder_path=str(args.space_dir),
+            repo_id=args.space_id,
+            repo_type="space",
+        )
+        print(f"space published: https://huggingface.co/spaces/{args.space_id}")
+
     return 0
 
 
