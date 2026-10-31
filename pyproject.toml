@@ -28,6 +28,7 @@ train = [
 ]
 chem = ["rdkit>=2024.3"]
 app = ["gradio>=4.44", "rdkit>=2024.3", "umap-learn>=0.5"]
+hf = ["huggingface_hub>=0.23"]
 dev = ["pytest>=8.0", "pytest-cov>=5.0", "ruff>=0.6"]
 
 [project.urls]
