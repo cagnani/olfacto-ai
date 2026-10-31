@@ -2316,6 +2316,9 @@ dev = [
     { name = "pytest-cov" },
     { name = "ruff" },
 ]
+hf = [
+    { name = "huggingface-hub" },
+]
 train = [
     { name = "accelerate" },
     { name = "datasets" },
@@ -2332,6 +2335,7 @@ requires-dist = [
     { name = "accelerate", marker = "extra == 'train'", specifier = ">=0.30" },
     { name = "datasets", marker = "extra == 'train'", specifier = ">=2.19" },
     { name = "gradio", marker = "extra == 'app'", specifier = ">=4.44" },
+    { name = "huggingface-hub", marker = "extra == 'hf'", specifier = ">=0.23" },
     { name = "iterative-stratification", specifier = ">=0.1.9" },
     { name = "numpy", specifier = ">=1.26" },
     { name = "pandas", specifier = ">=2.2" },
@@ -2346,7 +2350,7 @@ requires-dist = [
     { name = "transformers", marker = "extra == 'train'", specifier = ">=4.40" },
     { name = "umap-learn", marker = "extra == 'app'", specifier = ">=0.5" },
 ]
-provides-extras = ["train", "chem", "app", "dev"]
+provides-extras = ["train", "chem", "app", "hf", "dev"]
 
 [[package]]
 name = "opentelemetry-api"
