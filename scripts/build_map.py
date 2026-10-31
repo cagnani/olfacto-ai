@@ -30,9 +30,12 @@ def main() -> int:
     )
     parser.add_argument("--output-dir", type=Path, default=Path("outputs/map"))
     parser.add_argument("--max-length", type=int, default=128)
+    parser.add_argument("--limit", type=int, default=None, help="use only the first N molecules")
     args = parser.parse_args()
 
     df = load_odor_dataset(args.data)
+    if args.limit is not None:
+        df = df.head(args.limit).reset_index(drop=True)
     labels = get_label_columns(df)
     lexicon = load_lexicon(args.lexicon)
     families = [lexicon[label]["family"] for label in labels]
@@ -77,7 +80,7 @@ def main() -> int:
     np.save(args.output_dir / "embeddings.npy", embeddings[: len(molecule_smiles)])
 
     data_copy = Path("data/map.csv")
-    if data_copy.parent.is_dir():
+    if args.limit is None and data_copy.parent.is_dir():
         map_df.to_csv(data_copy, index=False)
 
     print(f"saved {len(map_df)} points to {args.output_dir / 'map.csv'}", flush=True)
