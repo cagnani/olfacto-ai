@@ -79,3 +79,9 @@ def test_umap_projection_is_deterministic():
 
     assert first.shape == (60, 2)
     assert np.allclose(first, second)
+
+
+def test_dominant_family():
+    from olfacto.map import dominant_family
+
+    assert dominant_family([0.2, 0.9, 0.1], ["floral", "frutado", "verde"]) == "frutado"

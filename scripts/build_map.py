@@ -12,15 +12,8 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer
 from olfacto.data import SMILES_COLUMN, get_label_columns, load_odor_dataset
 from olfacto.ingredients import load_ingredients
 from olfacto.labels import load_lexicon
-from olfacto.map import extract_embeddings, project_umap
+from olfacto.map import dominant_family, extract_embeddings, project_umap
 from olfacto.train import predict_proba
-
-
-def dominant_family(weights: np.ndarray, families: list[str]) -> str:
-    totals: dict[str, float] = {}
-    for value, family in zip(weights, families, strict=True):
-        totals[family] = totals.get(family, 0.0) + float(value)
-    return max(totals, key=totals.get)
 
 
 def main() -> int:

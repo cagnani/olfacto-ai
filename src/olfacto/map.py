@@ -90,3 +90,11 @@ def nearest_neighbors(
         similarities[exclude_index] = -np.inf
 
     return np.argsort(-similarities)[:k].tolist()
+
+
+def dominant_family(weights, families: list[str]) -> str:
+    """Return the family with the largest summed weight."""
+    totals: dict[str, float] = {}
+    for value, family in zip(weights, families, strict=True):
+        totals[family] = totals.get(family, 0.0) + float(value)
+    return max(totals, key=totals.get)
