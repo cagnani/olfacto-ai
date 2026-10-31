@@ -2,19 +2,32 @@
 
 Predição aberta de odor molecular, do SMILES ao aroma em português.
 
-O Olfacto é um modelo de aprendizado de máquina que recebe a estrutura de uma molécula
-(SMILES) e prevê quais dos 138 descritores olfativos ela provavelmente possui. O projeto
+[![CI](https://github.com/cagnani/olfacto-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/cagnani/olfacto-ai/actions/workflows/ci.yml)
+
+O Olfacto recebe a estrutura de uma molécula (SMILES) e prevê a probabilidade de 138
+descritores olfativos — frutado, floral, defumado, amadeirado e assim por diante. O projeto
 inclui um léxico em português, uma galeria de ingredientes brasileiros e um explorador
 visual do espaço olfativo.
 
-> Em construção. Métricas, modelo e demo serão publicados ao final da primeira fase.
+| Artefato | Link |
+|---|---|
+| Modelo | [SamuelCagnani/olfacto-chemberta-138](https://huggingface.co/SamuelCagnani/olfacto-chemberta-138) |
+| Dataset | [SamuelCagnani/olfacto-odor-138-ptbr](https://huggingface.co/datasets/SamuelCagnani/olfacto-odor-138-ptbr) |
+| Demo | [Space Olfacto](https://huggingface.co/spaces/SamuelCagnani/olfacto) |
 
-## Stack
+## Como funciona
 
-- `transformers` + `ChemBERTa` para classificação multi-label de SMILES
-- `scikit-learn` + `iterative-stratification` para avaliação e splits
-- `rdkit` para validação química e renderização
-- `gradio` para o Hugging Face Space
+```
+SMILES → tokenização por caractere → ChemBERTa (3 camadas, 384 dims)
+       → cabeça multi-label (138 saídas) → sigmoide → aromas em PT-BR
+```
+
+- **Dados:** 4.983 moléculas do dataset curado do [OpenPOM](https://github.com/ARY2260/openpom),
+  derivado dos catálogos GoodScents e Leffingwell. Média de 4,88 rótulos por molécula.
+- **Modelo:** fine-tune de `DeepChem/ChemBERTa-77M-MLM`, loss BCE com `pos_weight` por rótulo
+  (limitado a 20) para lidar com o desbalanceamento extremo (`fruity` 1.902 vs `chamomile` 31).
+- **Validação:** 5-fold com estratificação iterativa multi-label, métricas out-of-fold.
+- **Interpretação:** embeddings CLS projetados com UMAP para o mapa de cheiros.
 
 ## Uso rápido
 
@@ -24,7 +37,50 @@ make test
 make lint
 ```
 
-## Licença
+Inferência:
 
-MIT. Os rótulos derivam dos catálogos GoodScents e Leffingwell, agregados pelo
-[OpenPOM](https://github.com/ARY2260/openpom). Consulte a seção de citação no dataset.
+```python
+from olfacto.predict import OdorPredictor
+
+predictor = OdorPredictor.from_pretrained(
+    "SamuelCagnani/olfacto-chemberta-138",
+    "data/odor_labels_ptbr.json",
+)
+for prediction in predictor.predict("CCO", top_k=5):
+    print(f"{prediction.label_pt_br}: {prediction.probability:.2f}")
+```
+
+## Reproduzir o treino
+
+```bash
+uv sync --extra train
+uv run --extra train python scripts/run_cv.py --output-dir outputs/cv --final
+```
+
+No Kaggle, use `notebooks/02_train_chemberta.ipynb` (GPU T4) ou siga `docs/kaggle.md`.
+Resultados completos em [`docs/results.md`](docs/results.md).
+
+## Estrutura
+
+```
+src/olfacto/   data, labels, train, evaluate, predict, map, ingredients, cards
+configs/       hiperparâmetros
+scripts/       cross-validation, mapa, publicação no HF
+space/         app Gradio
+tests/         testes em CPU, sem rede
+```
+
+## Limitações
+
+- Prevê **qualidade** olfativa, não intensidade.
+- Só moléculas únicas, não misturas.
+- Rótulos de catálogo são ruidosos e enviesados para fragrâncias comerciais.
+- Não é adequado para uso regulatório, médico ou de segurança alimentar.
+- O modelo sempre retorna os aromas mais próximos que conhece, mesmo para cheiros novos.
+
+## Citação e licença
+
+Dados originais: Lee et al. (2023), *A Principal Odor Map Unifies Diverse Tasks in Human
+Olfactory Perception*, Science. Código de referência: OpenPOM (MIT).
+
+Este projeto é MIT. Veja `docs/results.md` para a comparação com o baseline do paper.
