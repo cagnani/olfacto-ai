@@ -106,3 +106,12 @@ def test_invalid_n_splits_raises():
     df = load_odor_dataset(DATA_PATH)
     with pytest.raises(ValueError, match="n_splits"):
         make_splits(df, n_splits=1)
+
+
+def test_label_columns_ignore_auxiliary_columns():
+    df = load_odor_dataset(DATA_PATH).head(10).assign(fold=0)
+
+    labels = get_label_columns(df)
+
+    assert "fold" not in labels
+    assert len(labels) == 138

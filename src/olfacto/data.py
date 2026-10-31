@@ -11,12 +11,20 @@ from iterstrat.ml_stratifiers import MultilabelStratifiedKFold
 SMILES_COLUMN = "nonStereoSMILES"
 DESCRIPTOR_COLUMN = "descriptors"
 METADATA_COLUMNS = (SMILES_COLUMN, DESCRIPTOR_COLUMN)
+AUXILIARY_COLUMNS = ("fold",)
 LABEL_START_COLUMN = len(METADATA_COLUMNS)
 
 
 def get_label_columns(df: pd.DataFrame) -> list[str]:
-    """Return the binary odor descriptor columns, in dataset order."""
-    return list(df.columns[LABEL_START_COLUMN:])
+    """Return the binary odor descriptor columns, in dataset order.
+
+    Auxiliary columns added by :func:`make_splits` (currently ``fold``) are ignored.
+    """
+    return [
+        column
+        for column in df.columns[LABEL_START_COLUMN:]
+        if column not in AUXILIARY_COLUMNS
+    ]
 
 
 def load_odor_dataset(path: str | Path) -> pd.DataFrame:
