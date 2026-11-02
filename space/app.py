@@ -40,7 +40,10 @@ def asset(filename: str) -> str:
 
 
 def model_asset(filename: str) -> str:
-    for candidate in (Path("outputs/fingerprint") / filename, Path("data") / filename):
+    candidates = [Path("outputs/fingerprint") / filename, Path("data") / filename]
+    if filename == "fingerprint.joblib":
+        candidates.insert(0, Path("outputs/fingerprint/model.joblib"))
+    for candidate in candidates:
         if candidate.is_file():
             return str(candidate)
     return hf_hub_download(repo_id=MODEL_ID, filename=filename)
@@ -74,7 +77,7 @@ MAP = load_map()
 try:
     FINGERPRINT_PATH = model_asset("fingerprint.joblib")
     PREDICTOR = EnsemblePredictor.from_pretrained(
-        MODEL_ID, LEXICON_PATH, FINGERPRINT_PATH
+        MODEL_ID, LEXICON_PATH, FINGERPRINT_PATH, weight_fingerprint=0.8
     )
 except Exception:
     PREDICTOR = OdorPredictor.from_pretrained(MODEL_ID, LEXICON_PATH)
