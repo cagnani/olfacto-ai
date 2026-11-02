@@ -36,6 +36,11 @@ def main() -> int:
     parser.add_argument("--dataset-id", default=DATASET_ID)
     parser.add_argument("--space-id", default="SamuelCagnani/olfacto")
     parser.add_argument("--space-dir", type=Path, default=Path("space"))
+    parser.add_argument(
+        "--fingerprint",
+        type=Path,
+        default=Path("outputs/fingerprint/model.joblib"),
+    )
     parser.add_argument("--skip-space", action="store_true")
     parser.add_argument("--token", default=os.environ.get("HF_TOKEN"))
     parser.add_argument(
@@ -79,6 +84,13 @@ def main() -> int:
         repo_type="model",
         ignore_patterns=["*.pt", "optimizer*", "training_args.bin"],
     )
+    if args.fingerprint.is_file():
+        api.upload_file(
+            path_or_fileobj=str(args.fingerprint),
+            path_in_repo="fingerprint.joblib",
+            repo_id=args.model_id,
+            repo_type="model",
+        )
     api.upload_file(
         path_or_fileobj=model_card.encode("utf-8"),
         path_in_repo="README.md",

@@ -9,6 +9,7 @@ import gradio as gr
 import pandas as pd
 from huggingface_hub import hf_hub_download
 
+from olfacto.ensemble import EnsemblePredictor
 from olfacto.ingredients import load_ingredients
 from olfacto.labels import load_lexicon
 from olfacto.predict import OdorPredictor
@@ -38,6 +39,13 @@ def asset(filename: str) -> str:
     return hf_hub_download(repo_id=DATASET_ID, filename=filename, repo_type="dataset")
 
 
+def model_asset(filename: str) -> str:
+    for candidate in (Path("outputs/fingerprint") / filename, Path("data") / filename):
+        if candidate.is_file():
+            return str(candidate)
+    return hf_hub_download(repo_id=MODEL_ID, filename=filename)
+
+
 def molecule_image(smiles: str):
     try:
         from rdkit import Chem
@@ -58,10 +66,18 @@ def load_map() -> pd.DataFrame | None:
         return None
 
 
-LEXICON = load_lexicon(asset("odor_labels_ptbr.json"))
+LEXICON_PATH = asset("odor_labels_ptbr.json")
+LEXICON = load_lexicon(LEXICON_PATH)
 INGREDIENTS = load_ingredients(asset("brazilian_ingredients.csv"))
-PREDICTOR = OdorPredictor.from_pretrained(MODEL_ID, asset("odor_labels_ptbr.json"))
 MAP = load_map()
+
+try:
+    FINGERPRINT_PATH = model_asset("fingerprint.joblib")
+    PREDICTOR = EnsemblePredictor.from_pretrained(
+        MODEL_ID, LEXICON_PATH, FINGERPRINT_PATH
+    )
+except Exception:
+    PREDICTOR = OdorPredictor.from_pretrained(MODEL_ID, LEXICON_PATH)
 
 
 def predict_molecule(smiles: str, top_k: int):
