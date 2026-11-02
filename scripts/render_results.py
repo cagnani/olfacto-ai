@@ -20,11 +20,45 @@ def main() -> int:
         "--per-label", type=Path, default=Path("outputs/cv/per_label.csv")
     )
     parser.add_argument("--output", type=Path, default=Path("docs/results.md"))
+    parser.add_argument(
+        "--fingerprint-summary",
+        type=Path,
+        default=Path("outputs/fingerprint/cv_summary.json"),
+    )
+    parser.add_argument(
+        "--ensemble-summary",
+        type=Path,
+        default=Path("outputs/ensemble/summary.json"),
+    )
     args = parser.parse_args()
 
     summary = json.loads(args.summary.read_text(encoding="utf-8"))
     per_label = pd.read_csv(args.per_label)
-    args.output.write_text(render_results(summary, per_label), encoding="utf-8")
+
+    baselines = []
+    if args.fingerprint_summary.is_file():
+        fingerprint = json.loads(args.fingerprint_summary.read_text(encoding="utf-8"))
+        baselines.append(
+            {
+                "name": "Morgan + LogReg",
+                "description": "5-fold OOF, baseline clássico",
+                "macro_roc_auc": fingerprint["oof"]["macro_roc_auc"],
+            }
+        )
+    if args.ensemble_summary.is_file():
+        ensemble = json.loads(args.ensemble_summary.read_text(encoding="utf-8"))
+        weight = ensemble["weight_fingerprint"]
+        baselines.append(
+            {
+                "name": f"Ensemble ({weight:.0%} fingerprint)",
+                "description": "5-fold OOF, blend",
+                "macro_roc_auc": ensemble["oof"]["macro_roc_auc"],
+            }
+        )
+
+    args.output.write_text(
+        render_results(summary, per_label, baselines=baselines), encoding="utf-8"
+    )
     print(f"wrote {args.output}")
     return 0
 
