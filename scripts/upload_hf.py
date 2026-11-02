@@ -106,9 +106,6 @@ def main() -> int:
         print(f"macro ROC-AUC: {metrics['macro_roc_auc']:.4f}")
         return 0
 
-    if not args.token:
-        raise SystemExit("set HF_TOKEN or pass --token")
-
     from huggingface_hub import HfApi
 
     api = HfApi(token=args.token)
