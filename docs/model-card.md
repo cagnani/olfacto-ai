@@ -56,9 +56,20 @@ Avaliação out-of-fold (5 folds, um modelo por fold, `min_positives=20`):
 | AUC por fold (média±dp) | 0.7547 ± 0.0043 |
 | Rótulos avaliados | 138 |
 
+### Comparação de modelos
+
+| Modelo | ROC-AUC macro (OOF) | ROC-AUC micro (OOF) |
+|---|---|---|
+| ChemBERTa (este modelo) | 0.7516 | 0.8402 |
+| Morgan + LogReg | 0.8285 | 0.8860 |
+| **Ensemble (80% fingerprint)** | 0.8402 | 0.8956 |
+
 Referência: o OpenPOM reporta **0.8872** com 5-fold CV e ensemble de 10
-modelos. Este é um modelo único e menor; a comparação é uma ablation, não uma alegação de
-superioridade. Os rótulos vêm de catálogos e contêm ruído.
+modelos. A comparação é uma ablation, não uma alegação de superioridade. Os rótulos vêm de
+catálogos e contêm ruído.
+
+O arquivo `fingerprint.joblib` acompanha este repositório. O Space usa o ensemble
+(80% fingerprint + 20% ChemBERTa), que supera o transformer sozinho neste dataset.
 
 ## Uso
 

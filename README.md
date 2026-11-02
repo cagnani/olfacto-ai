@@ -26,6 +26,8 @@ SMILES → tokenização por caractere → ChemBERTa (3 camadas, 384 dims)
   derivado dos catálogos GoodScents e Leffingwell. Média de 4,88 rótulos por molécula.
 - **Modelo:** fine-tune de `DeepChem/ChemBERTa-77M-MLM`, loss BCE com `pos_weight` por rótulo
   (limitado a 20) para lidar com o desbalanceamento extremo (`fruity` 1.902 vs `chamomile` 31).
+- **Ensemble:** fingerprints Morgan (2048 bits, raio 2) + regressão logística por rótulo,
+  combinados com o transformer (peso 0.8 para o fingerprint, escolhido out-of-fold).
 - **Validação:** 5-fold com estratificação iterativa multi-label, métricas out-of-fold.
 - **Interpretação:** embeddings CLS projetados com UMAP para o mapa de cheiros.
 
@@ -52,21 +54,22 @@ for prediction in predictor.predict("CCO", top_k=5):
 
 ## Resultados
 
-Validação cruzada de 5 folds, um modelo por fold, métricas out-of-fold:
+Validação cruzada de 5 folds, métricas out-of-fold:
 
-| Métrica | Valor |
+| Modelo | ROC-AUC macro |
 |---|---|
-| ROC-AUC macro | **0.7516** |
-| IC 95% (bootstrap) | [0.7465, 0.7574] |
-| ROC-AUC micro | 0.8402 |
-| PR-AUC macro | 0.1085 |
-| AUC por fold | 0.7547 ± 0.0043 |
+| OpenPOM (MPNN, ensemble de 10) | 0.8872 |
+| **Olfacto Ensemble (80% fingerprint + 20% ChemBERTa)** | **0.8402** |
+| Morgan + LogReg | 0.8285 |
+| ChemBERTa (modelo único) | 0.7516 |
 
-O baseline do OpenPOM é **0.8872** (5-fold CV, ensemble de 10 MPNNs). A comparação é uma
-ablation, não uma disputa: o Olfacto é um modelo único e menor, treinado em hardware
-gratuito. Por rótulo, o modelo vai bem em notas sulfurosas (alho 0.971, cebola 0.967) e mal
-em frutas finas (morango 0.461, uva 0.508). Tabela completa em
-[`docs/results.md`](docs/results.md).
+O achado central: neste dataset, um baseline clássico de fingerprints Morgan + regressão
+logística **supera** o transformer pequeno. O ensemble recupera o melhor dos dois e é o que
+roda no Space. O ChemBERTa sozinho tem ROC-AUC micro 0.8402 e por rótulo vai bem em notas
+sulfurosas (alho 0.971, cebola 0.967) e mal em frutas finas (morango 0.461, uva 0.508).
+
+A comparação com o OpenPOM é uma ablation, não uma disputa de arquitetura. Tabela completa
+em [`docs/results.md`](docs/results.md).
 
 ## Reproduzir o treino
 

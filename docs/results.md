@@ -37,15 +37,18 @@ Média dos folds: **0.7547 ± 0.0043**.
 | Recall@5 | 0.3186 |
 | Rótulos avaliados | 138 (mínimo de 20 positivos) |
 
-## Comparação com o OpenPOM
+## Comparação de modelos
 
 | Modelo | Avaliação | ROC-AUC macro |
 |---|---|---|
 | OpenPOM (MPNN) | 5-fold CV, ensemble de 10 | 0.8872 |
 | Olfacto (ChemBERTa) | 5-fold OOF, modelo único | 0.7516 |
+| Morgan + LogReg | 5-fold OOF, baseline clássico | 0.8285 |
+| Ensemble (80% fingerprint) | 5-fold OOF, blend | 0.8402 |
 
-A comparação é uma ablation: o Olfacto usa um modelo único, menor e treinado em CPU/GPU
-gratuita. O OpenPOM usa um ensemble de 10 MPNNs. Não é uma disputa de arquitetura.
+A comparação é uma ablation, não uma disputa de arquitetura. O OpenPOM usa um ensemble de
+10 MPNNs; o ChemBERTa é um modelo único e pequeno. O baseline de fingerprints supera o
+transformer neste dataset — um resultado honesto que motivou o ensemble usado no demo.
 
 ## Melhores rótulos
 
