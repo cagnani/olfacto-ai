@@ -116,9 +116,8 @@ class OdorPredictor:
 
         return cls(model, tokenizer, labels, lexicon, max_length, device)
 
-    def predict_batch(
-        self, smiles_list: list[str], top_k: int = 10
-    ) -> list[list[Prediction]]:
+    def predict_scores_batch(self, smiles_list: list[str]) -> np.ndarray:
+        """Return the full probability matrix for a list of SMILES."""
         invalid = [smiles for smiles in smiles_list if not is_valid_smiles(smiles)]
         if invalid:
             raise ValueError(f"invalid SMILES: {invalid}")
@@ -140,8 +139,12 @@ class OdorPredictor:
             logits = self.model(
                 input_ids=input_ids, attention_mask=attention_mask
             ).logits
-        scores = torch.sigmoid(logits).cpu().numpy()
+        return torch.sigmoid(logits).cpu().numpy()
 
+    def predict_batch(
+        self, smiles_list: list[str], top_k: int = 10
+    ) -> list[list[Prediction]]:
+        scores = self.predict_scores_batch(smiles_list)
         return [
             rank_predictions(row, self.labels, self.lexicon, top_k) for row in scores
         ]
