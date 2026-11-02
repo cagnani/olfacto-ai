@@ -27,12 +27,30 @@ def build_model_card(
     metrics: dict,
     base_model: str = "DeepChem/ChemBERTa-77M-MLM",
     dataset_id: str = DATASET_ID,
+    ensemble: dict | None = None,
+    baseline: dict | None = None,
 ) -> str:
     """Return a model card that only states metrics passed in."""
     _validate(metrics)
     low, high = metrics["macro_roc_auc_ci"]
     mean_fold = metrics["mean_fold_macro_auc"]
     std_fold = metrics["std_fold_macro_auc"]
+
+    comparison_rows = (
+        f"| ChemBERTa (este modelo) | {metrics['macro_roc_auc']:.4f} | "
+        f"{metrics['micro_roc_auc']:.4f} |"
+    )
+    if baseline is not None:
+        comparison_rows += (
+            f"\n| Morgan + LogReg | {baseline['macro_roc_auc']:.4f} | "
+            f"{baseline['micro_roc_auc']:.4f} |"
+        )
+    if ensemble is not None:
+        weight = ensemble.get("weight_fingerprint", 0.8)
+        comparison_rows += (
+            f"\n| **Ensemble ({weight:.0%} fingerprint)** | "
+            f"{ensemble['macro_roc_auc']:.4f} | {ensemble['micro_roc_auc']:.4f} |"
+        )
 
     return f"""---
 license: mit
@@ -92,9 +110,18 @@ Avaliação out-of-fold (5 folds, um modelo por fold, `min_positives=20`):
 | AUC por fold (média±dp) | {mean_fold:.4f} ± {std_fold:.4f} |
 | Rótulos avaliados | {metrics["n_labels"]} |
 
+### Comparação de modelos
+
+| Modelo | ROC-AUC macro (OOF) | ROC-AUC micro (OOF) |
+|---|---|---|
+{comparison_rows}
+
 Referência: o OpenPOM reporta **{OPENPOM_BASELINE:.4f}** com 5-fold CV e ensemble de 10
-modelos. Este é um modelo único e menor; a comparação é uma ablation, não uma alegação de
-superioridade. Os rótulos vêm de catálogos e contêm ruído.
+modelos. A comparação é uma ablation, não uma alegação de superioridade. Os rótulos vêm de
+catálogos e contêm ruído.
+
+O arquivo `fingerprint.joblib` acompanha este repositório. O Space usa o ensemble
+(80% fingerprint + 20% ChemBERTa), que supera o transformer sozinho neste dataset.
 
 ## Uso
 

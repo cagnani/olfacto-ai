@@ -41,6 +41,16 @@ def main() -> int:
         type=Path,
         default=Path("outputs/fingerprint/model.joblib"),
     )
+    parser.add_argument(
+        "--fingerprint-summary",
+        type=Path,
+        default=Path("outputs/fingerprint/cv_summary.json"),
+    )
+    parser.add_argument(
+        "--ensemble-summary",
+        type=Path,
+        default=Path("outputs/ensemble/summary.json"),
+    )
     parser.add_argument("--skip-space", action="store_true")
     parser.add_argument("--token", default=os.environ.get("HF_TOKEN"))
     parser.add_argument(
@@ -54,7 +64,32 @@ def main() -> int:
 
     summary = json.loads(args.summary.read_text(encoding="utf-8"))
     metrics = metrics_from_summary(summary)
-    model_card = build_model_card(metrics, dataset_id=args.dataset_id)
+
+    baseline = None
+    if args.fingerprint_summary.is_file():
+        fingerprint = json.loads(
+            args.fingerprint_summary.read_text(encoding="utf-8")
+        )
+        baseline = {
+            "macro_roc_auc": fingerprint["oof"]["macro_roc_auc"],
+            "micro_roc_auc": fingerprint["oof"]["micro_roc_auc"],
+        }
+
+    ensemble = None
+    if args.ensemble_summary.is_file():
+        blend = json.loads(args.ensemble_summary.read_text(encoding="utf-8"))
+        ensemble = {
+            "macro_roc_auc": blend["oof"]["macro_roc_auc"],
+            "micro_roc_auc": blend["oof"]["micro_roc_auc"],
+            "weight_fingerprint": blend["weight_fingerprint"],
+        }
+
+    model_card = build_model_card(
+        metrics,
+        dataset_id=args.dataset_id,
+        ensemble=ensemble,
+        baseline=baseline,
+    )
     dataset_card = build_dataset_card()
 
     if args.write_cards is not None:

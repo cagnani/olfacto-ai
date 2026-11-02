@@ -24,6 +24,18 @@ def test_model_card_contains_real_metrics():
     assert "TBD" not in card
 
 
+def test_model_card_includes_ensemble_and_baseline():
+    card = build_model_card(
+        METRICS,
+        baseline={"macro_roc_auc": 0.83, "micro_roc_auc": 0.89},
+        ensemble={"macro_roc_auc": 0.84, "micro_roc_auc": 0.90, "weight_fingerprint": 0.8},
+    )
+
+    assert "Morgan + LogReg" in card
+    assert "Ensemble (80% fingerprint)" in card
+    assert "0.8400" in card
+
+
 def test_model_card_requires_metrics():
     broken = dict(METRICS)
     del broken["macro_roc_auc"]
