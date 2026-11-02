@@ -9,6 +9,8 @@ descritores olfativos — frutado, floral, defumado, amadeirado e assim por dian
 inclui um léxico em português, uma galeria de ingredientes brasileiros e um explorador
 visual do espaço olfativo.
 
+Artigo técnico: [português](docs/article-ptbr.md) · [inglês](docs/article-en.md).
+
 | Artefato | Link |
 |---|---|
 | Modelo | [SamuelCagnani/olfacto-chemberta-138](https://huggingface.co/SamuelCagnani/olfacto-chemberta-138) |
