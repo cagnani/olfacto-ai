@@ -71,25 +71,48 @@ parecido ficam perto no mapa — uma forma visual de explorar o espaço olfativo
 
 ## Resultados
 
-Validação cruzada de 5 folds, um modelo por fold, métricas calculadas out-of-fold:
+Validação cruzada de 5 folds, métricas calculadas out-of-fold. O ChemBERTa sozinho:
 
 | Métrica | Valor |
 |---|---|
-| ROC-AUC macro (OOF) | **0,7516** |
+| ROC-AUC macro (OOF) | 0,7516 |
 | IC 95% (bootstrap) | [0,7465; 0,7574] |
 | ROC-AUC micro | 0,8402 |
 | PR-AUC macro | 0,1085 |
 | Recall@5 | 0,3186 |
 | ROC-AUC por fold | 0,7547 ± 0,0043 |
 
-O OpenPOM reporta **0,8872** com 5-fold CV e um ensemble de 10 MPNNs. O Olfacto é um modelo
-único, menor, treinado em hardware gratuito. A diferença é esperada — e o objetivo não era
-vencer o paper, era publicar um artefato aberto, em português e reproduzível.
+O OpenPOM reporta **0,8872** com 5-fold CV e um ensemble de 10 MPNNs. O ChemBERTa é um
+modelo único, menor, treinado em hardware gratuito. A diferença era esperada.
+
+### O baseline que venceu o transformer
+
+Antes de fechar, rodei o baseline mais chato possível: fingerprints Morgan de 2048 bits
+(raio 2) + uma regressão logística balanceada por rótulo. Sem transformer, sem GPU, sem
+Hugging Face.
+
+| Modelo | ROC-AUC macro (OOF) |
+|---|---|
+| OpenPOM (MPNN, ensemble de 10) | 0,8872 |
+| **Ensemble (80% fingerprint + 20% ChemBERTa)** | **0,8402** |
+| Morgan + LogReg | 0,8285 |
+| ChemBERTa (modelo único) | 0,7516 |
+
+O baseline clássico **venceu** o transformer pequeno por 7,7 pontos de AUC. E o ensemble
+dos dois chegou a 0,8402, com IC 95% [0,8355; 0,8447] e ROC-AUC micro 0,8956.
+
+Por quê? Com 4.983 moléculas, um transformer de 3 camadas tem pouco sinal para aprender
+representações olfativas do zero. Fingerprints codificam subestruturas locais que já são
+preditivas de odor, e a regressão logística lida bem com vetores esparsos de alta dimensão.
+É o tipo de resultado que só aparece quando você roda o baseline — e que muita gente pula.
+
+O demo usa o ensemble, com peso de 80% para o fingerprint escolhido por validação
+out-of-fold. O ChemBERTa continua publicado como modelo aberto e como ablation.
 
 ### O que o modelo aprendeu (e o que não)
 
-O resultado por rótulo é mais interessante que a média. Os melhores descritores são os que
-têm assinatura química forte:
+O resultado por rótulo é mais interessante que a média. Os melhores descritores do
+ChemBERTa são os que têm assinatura química forte:
 
 | Rótulo | Positivos | ROC-AUC |
 |---|---|---|
@@ -110,11 +133,11 @@ Os piores são frutas finas:
 
 Faz sentido. Enxofre tem padrões estruturais claros e o catálogo é consistente ao rotular
 alho e cebola. Já distinguir morango de framboesa depende de nuances que os rótulos de
-catálogo tratam de forma ruidosa — e o modelo pequeno não dá conta.
+catálogo tratam de forma ruidosa — e nenhum dos modelos pequenos dá conta.
 
 O PR-AUC macro (0,1085) parece baixo, mas a linha de base também é: com rótulos raros, o
-acaso fica perto da prevalência média (~0,035). O ROC-AUC micro (0,8402) e a análise por
-rótulo contam uma história mais útil.
+acaso fica perto da prevalência média (~0,035). O ROC-AUC micro e a análise por rótulo
+contam uma história mais útil.
 
 ## O que isso não faz
 
@@ -144,10 +167,15 @@ split aleatório, a macro-AUC parece boa e o modelo é inútil nos rótulos raro
 e ponderar a loss mudou o comportamento de forma visível.
 
 O segundo aprendizado foi de escopo: escolher ChemBERTa em vez de reproduzir a MPNN não foi
-preguiça — foi o que permitiu publicar modelo, dataset e demo em duas semanas, com uma
-comparação honesta contra o baseline. E o terceiro foi aceitar o resultado: 0,75 contra
-0,89 é uma resposta, não um fracasso. O que importa é saber exatamente por que a diferença
-existe.
+preguiça — foi o que permitiu publicar modelo, dataset e demo em duas semanas.
+
+O terceiro foi o mais importante: **sempre rode o baseline burro**. Eu ia fechar o projeto
+com 0,75 de AUC e uma explicação elegante sobre limitações de modelo pequeno. O Morgan +
+regressão logística fez 0,83 em 17 minutos de CPU. Se eu não tivesse rodado, teria
+publicado uma história bonita e errada sobre o que era possível com os dados.
+
+Aceitar o resultado também fez parte: 0,84 de ensemble contra 0,89 do OpenPOM é uma
+resposta, não um fracasso. O que importa é saber exatamente por que a diferença existe.
 
 Se você trabalha com comida, aroma ou química, o Space está aberto. Digite um SMILES, ou
 escolha um ingrediente brasileiro, e veja o que a IA sente.
