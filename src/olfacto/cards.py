@@ -78,6 +78,8 @@ Modelo aberto de predição de odor molecular: recebe um SMILES e retorna a prob
 de 138 descritores olfativos (frutado, floral, defumado, etc.). Parte do projeto
 [Olfacto AI](https://github.com/cagnani/olfacto-ai), com interface em português.
 
+Demo: [Olfacto Space](https://huggingface.co/spaces/SamuelCagnani/olfacto).
+
 ## Uso pretendido
 
 - Predição de qualidade olfativa de moléculas únicas a partir da estrutura.
