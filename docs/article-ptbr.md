@@ -55,7 +55,7 @@ macro-AUC de validação. Cinco folds, métricas out-of-fold.
 
 ## O que eu adicionei
 
-Reproduzir não é portfólio. A contribuição original está em três camadas:
+Reproduzir não é contribuição. A parte original está em três camadas:
 
 **1. Léxico em português.** Os 138 descritores traduzidos e agrupados em famílias
 olfativas (floral, frutado, verde, amadeirado, especiado, doce, animal, químico, terroso,
@@ -167,7 +167,7 @@ split aleatório, a macro-AUC parece boa e o modelo é inútil nos rótulos raro
 e ponderar a loss mudou o comportamento de forma visível.
 
 O segundo aprendizado foi de escopo: escolher ChemBERTa em vez de reproduzir a MPNN não foi
-preguiça — foi o que permitiu publicar modelo, dataset e demo em duas semanas.
+preguiça — foi o que permitiu publicar modelo, dataset e demo em poucos dias.
 
 O terceiro foi o mais importante: **sempre rode o baseline burro**. Eu ia fechar o projeto
 com 0,75 de AUC e uma explicação elegante sobre limitações de modelo pequeno. O Morgan +
