@@ -38,9 +38,20 @@ def test_render_results_contains_real_numbers():
         ]
     )
 
-    text = render_results(SUMMARY, per_label)
+    text = render_results(
+        SUMMARY,
+        per_label,
+        baselines=[
+            {
+                "name": "Morgan + LogReg",
+                "description": "5-fold OOF",
+                "macro_roc_auc": 0.8293,
+            }
+        ],
+    )
 
     assert "0.7654" in text
+    assert "0.8293" in text
     assert "0.8872" in text
     assert "fruity" in text
     assert "chamomile" in text

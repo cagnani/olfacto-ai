@@ -7,7 +7,11 @@ import pandas as pd
 OPENPOM_BASELINE = 0.8872
 
 
-def render_results(summary: dict, per_label: pd.DataFrame) -> str:
+def render_results(
+    summary: dict,
+    per_label: pd.DataFrame,
+    baselines: list[dict] | None = None,
+) -> str:
     oof = summary["oof"]
     low, high = oof["macro_roc_auc_ci"]
     folds = summary["fold_metrics"]
@@ -30,6 +34,13 @@ def render_results(summary: dict, per_label: pd.DataFrame) -> str:
     )
 
     config = summary["config"]
+
+    baseline_rows = ""
+    for baseline in baselines or []:
+        baseline_rows += (
+            f"\n| {baseline['name']} | {baseline['description']} | "
+            f"{baseline['macro_roc_auc']:.4f} |"
+        )
 
     return f"""# Resultados — validação cruzada
 
@@ -71,7 +82,7 @@ Média dos folds: **{summary["mean_fold_macro_auc"]:.4f} ± {summary["std_fold_m
 | Modelo | Avaliação | ROC-AUC macro |
 |---|---|---|
 | OpenPOM (MPNN) | 5-fold CV, ensemble de 10 | {OPENPOM_BASELINE:.4f} |
-| Olfacto (ChemBERTa) | 5-fold OOF, modelo único | {oof["macro_roc_auc"]:.4f} |
+| Olfacto (ChemBERTa) | 5-fold OOF, modelo único | {oof["macro_roc_auc"]:.4f} |{baseline_rows}
 
 A comparação é uma ablation: o Olfacto usa um modelo único, menor e treinado em CPU/GPU
 gratuita. O OpenPOM usa um ensemble de 10 MPNNs. Não é uma disputa de arquitetura.
