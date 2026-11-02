@@ -15,7 +15,8 @@ Artigo técnico: [português](docs/article-ptbr.md) · [inglês](docs/article-en
 |---|---|
 | Modelo | [SamuelCagnani/olfacto-chemberta-138](https://huggingface.co/SamuelCagnani/olfacto-chemberta-138) |
 | Dataset | [SamuelCagnani/olfacto-odor-138-ptbr](https://huggingface.co/datasets/SamuelCagnani/olfacto-odor-138-ptbr) |
-| Demo | [Space Olfacto](https://huggingface.co/spaces/SamuelCagnani/olfacto) |
+| Demo interativo | [Space Olfacto](https://huggingface.co/spaces/SamuelCagnani/olfacto-live) |
+| Showcase estático | [Space estático](https://huggingface.co/spaces/SamuelCagnani/olfacto) |
 
 ## Como funciona
 

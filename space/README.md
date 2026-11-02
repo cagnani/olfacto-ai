@@ -17,3 +17,5 @@ ou explore o mapa olfativo.
 Modelo: [SamuelCagnani/olfacto-chemberta-138](https://huggingface.co/SamuelCagnani/olfacto-chemberta-138)
 Dados: [SamuelCagnani/olfacto-odor-138-ptbr](https://huggingface.co/datasets/SamuelCagnani/olfacto-odor-138-ptbr)
 Código: [github.com/cagnani/olfacto-ai](https://github.com/cagnani/olfacto-ai)
+Artigos: [PT-BR](https://github.com/cagnani/olfacto-ai/blob/main/docs/article-ptbr.md) · [EN](https://github.com/cagnani/olfacto-ai/blob/main/docs/article-en.md)
+Showcase estático: [SamuelCagnani/olfacto](https://huggingface.co/spaces/SamuelCagnani/olfacto)

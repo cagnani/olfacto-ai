@@ -20,6 +20,9 @@ size_categories:
 Dataset curado para predição de odor molecular, com 4983 moléculas, 138
 rótulos binários, léxico em português e uma galeria de ingredientes brasileiros.
 
+Demo: [Olfacto Space](https://huggingface.co/spaces/SamuelCagnani/olfacto-live).
+Código: [github.com/cagnani/olfacto-ai](https://github.com/cagnani/olfacto-ai).
+
 ## Origem
 
 Os rótulos derivam dos catálogos GoodScents e Leffingwell, agregados pelo

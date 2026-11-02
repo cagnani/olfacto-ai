@@ -15,6 +15,7 @@ REQUIRED_METRICS = (
 OPENPOM_BASELINE = 0.8872
 DATASET_ID = "SamuelCagnani/olfacto-odor-138-ptbr"
 MODEL_ID = "SamuelCagnani/olfacto-chemberta-138"
+SPACE_ID = "SamuelCagnani/olfacto-live"
 
 
 def _validate(metrics: dict) -> None:
@@ -78,7 +79,8 @@ Modelo aberto de predição de odor molecular: recebe um SMILES e retorna a prob
 de 138 descritores olfativos (frutado, floral, defumado, etc.). Parte do projeto
 [Olfacto AI](https://github.com/cagnani/olfacto-ai), com interface em português.
 
-Demo: [Olfacto Space](https://huggingface.co/spaces/SamuelCagnani/olfacto).
+Demo: [Olfacto Space](https://huggingface.co/spaces/SamuelCagnani/olfacto-live).
+Artigos: [PT-BR](https://github.com/cagnani/olfacto-ai/blob/main/docs/article-ptbr.md) · [EN](https://github.com/cagnani/olfacto-ai/blob/main/docs/article-en.md).
 
 ## Uso pretendido
 
@@ -187,6 +189,9 @@ size_categories:
 
 Dataset curado para predição de odor molecular, com {n_molecules} moléculas, {n_labels}
 rótulos binários, léxico em português e uma galeria de ingredientes brasileiros.
+
+Demo: [Olfacto Space](https://huggingface.co/spaces/SamuelCagnani/olfacto-live).
+Código: [github.com/cagnani/olfacto-ai](https://github.com/cagnani/olfacto-ai).
 
 ## Origem
 

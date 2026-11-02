@@ -1,4 +1,4 @@
-.PHONY: install dev test lint format train cv map publish upload space-static clean
+.PHONY: install dev test lint format train cv map publish upload space-static assets clean
 
 install:
 	uv sync --extra dev
@@ -31,6 +31,9 @@ upload: publish
 space-static:
 	uv run --extra train --extra app --extra chem --extra hf python scripts/build_static_space.py
 	uv run --extra hf python scripts/upload_static_space.py
+
+assets:
+	uv run --extra train --extra app --extra chem --extra assets python scripts/build_article_assets.py
 
 clean:
 	rm -rf .pytest_cache .ruff_cache .coverage htmlcov
