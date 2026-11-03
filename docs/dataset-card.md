@@ -21,6 +21,7 @@ Dataset curado para predição de odor molecular, com 4983 moléculas, 138
 rótulos binários, léxico em português e uma galeria de ingredientes brasileiros.
 
 Demo: [Olfacto Space](https://huggingface.co/spaces/SamuelCagnani/olfacto-live).
+Artigo: [PT-BR no Hugging Face](https://huggingface.co/blog/SamuelCagnani/olfacto-ai-br).
 Código: [github.com/cagnani/olfacto-ai](https://github.com/cagnani/olfacto-ai).
 
 ## Origem

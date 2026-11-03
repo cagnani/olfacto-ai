@@ -9,7 +9,7 @@ descritores olfativos — frutado, floral, defumado, amadeirado e assim por dian
 inclui um léxico em português, uma galeria de ingredientes brasileiros e um explorador
 visual do espaço olfativo.
 
-Artigo técnico: [português](docs/article-ptbr.md) · [inglês](docs/article-en.md).
+Artigo técnico: [PT-BR no Hugging Face](https://huggingface.co/blog/SamuelCagnani/olfacto-ai-br) · [PT-BR](docs/article-ptbr.md) · [EN](docs/article-en.md).
 
 | Artefato | Link |
 |---|---|
@@ -17,6 +17,7 @@ Artigo técnico: [português](docs/article-ptbr.md) · [inglês](docs/article-en
 | Dataset | [SamuelCagnani/olfacto-odor-138-ptbr](https://huggingface.co/datasets/SamuelCagnani/olfacto-odor-138-ptbr) |
 | Demo interativo | [Space Olfacto](https://huggingface.co/spaces/SamuelCagnani/olfacto-live) |
 | Showcase estático | [Space estático](https://huggingface.co/spaces/SamuelCagnani/olfacto) |
+| Artigo (PT-BR) | [Ensinando uma IA a sentir cheiro](https://huggingface.co/blog/SamuelCagnani/olfacto-ai-br) |
 
 ## Como funciona
 

@@ -25,7 +25,9 @@ de 138 descritores olfativos (frutado, floral, defumado, etc.). Parte do projeto
 [Olfacto AI](https://github.com/cagnani/olfacto-ai), com interface em português.
 
 Demo: [Olfacto Space](https://huggingface.co/spaces/SamuelCagnani/olfacto-live).
-Artigos: [PT-BR](https://github.com/cagnani/olfacto-ai/blob/main/docs/article-ptbr.md) · [EN](https://github.com/cagnani/olfacto-ai/blob/main/docs/article-en.md).
+Artigos: [PT-BR no Hugging Face](https://huggingface.co/blog/SamuelCagnani/olfacto-ai-br) ·
+[PT-BR](https://github.com/cagnani/olfacto-ai/blob/main/docs/article-ptbr.md) ·
+[EN](https://github.com/cagnani/olfacto-ai/blob/main/docs/article-en.md).
 
 ## Uso pretendido
 

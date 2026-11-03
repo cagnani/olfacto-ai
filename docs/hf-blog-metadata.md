@@ -25,3 +25,8 @@
 - O limite observado é de ~1 artigo por dia. Publique o PT hoje e o EN no dia seguinte; se o segundo não bloquear, publique os dois.
 - Depois de publicar, adicione o link cruzado no topo de cada artigo.
 - O HF cria automaticamente a seção "Article(s) mentioning ..." nas páginas do modelo e do dataset.
+
+## Publicado
+
+- **PT-BR:** https://huggingface.co/blog/SamuelCagnani/olfacto-ai-br (publicado em 03/11/2026 UTC)
+- **EN:** publicar no dia seguinte; depois adicionar o link cruzado nos dois artigos.
