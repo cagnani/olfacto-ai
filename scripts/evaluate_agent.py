@@ -130,7 +130,8 @@ def main() -> int:
         )
         pairing_unique = len(set(result.pairings)) == 3
 
-        template = fallback_response(dish, result.aromas, result.pairings)
+        context_pairings = result.context[0]["pairings"] if result.context else []
+        template = fallback_response(dish, result.aromas, context_pairings)
         llm_score = judge(client, dish, result.aromas, result.description)
         time.sleep(0.4)
         template_score = judge(client, dish, result.aromas, template["descricao"])
