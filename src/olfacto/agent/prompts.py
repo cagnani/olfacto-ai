@@ -9,6 +9,8 @@ Regras:
 - Não faça alegações de saúde, alergênicos ou segurança alimentar.
 - Se a confiança for baixa, diga isso de forma simples.
 - Escreva em português do Brasil, com no máximo 80 palavras na descrição.
+- Nas harmonizações, varie as categorias: acompanhamento, bebida e finalização.
+- Não repita bebidas alcoólicas nas harmonizações.
 - Responda somente com JSON válido, sem texto fora do JSON.
 """
 
@@ -53,7 +55,8 @@ Contexto sensorial recuperado:
 Gere:
 1. descricao: 1 a 2 frases para menu, no máximo 80 palavras.
 2. perfil_sensorial: 3 a 5 aromas da lista acima, em português.
-3. harmonizacoes: 3 sugestões de acompanhamento.
+3. harmonizacoes: 3 sugestões variadas — um acompanhamento, uma bebida e
+   uma finalização. Não repita a mesma categoria.
 4. confianca: alta, media ou baixa.
 
 Formato de saída (JSON):

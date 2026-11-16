@@ -37,6 +37,7 @@ def test_prompt_contains_dish_aromas_and_context():
     assert "defumado (80%)" in prompt
     assert "Feijoada: Feijoada densa" in prompt
     assert "SOMENTE" in prompt
+    assert "acompanhamento" in prompt
     assert "JSON" in prompt
 
 
