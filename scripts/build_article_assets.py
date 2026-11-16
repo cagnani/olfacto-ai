@@ -229,6 +229,60 @@ def thumbnail(output: Path) -> None:
     image.save(output)
 
 
+def sommelier_architecture(output: Path) -> None:
+    from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
+
+    figure, axis = plt.subplots(figsize=(14, 8), dpi=150)
+    axis.set_xlim(0, 14)
+    axis.set_ylim(0, 8)
+    axis.axis("off")
+
+    def box(x, y, width, height, title, body, color):
+        patch = FancyBboxPatch(
+            (x, y), width, height,
+            boxstyle="round,pad=0.08,rounding_size=0.18",
+            linewidth=1.2, edgecolor="#d1d5db", facecolor=color,
+        )
+        axis.add_patch(patch)
+        axis.text(x + 0.18, y + height - 0.28, title, fontsize=11, fontweight="bold",
+                  color="#111827", ha="left", va="center")
+        axis.text(x + 0.18, y + height - 0.65, body, fontsize=9, color="#4b5563",
+                  ha="left", va="center")
+
+    def arrow(start, end, style="-|>", color="#4c9f70", dashed=False):
+        patch = FancyArrowPatch(
+            start, end, arrowstyle=style, mutation_scale=16, linewidth=1.6,
+            color=color, linestyle="--" if dashed else "-",
+        )
+        axis.add_patch(patch)
+
+    box(0.8, 6.4, 4.2, 1.1, "1. Prato e ingredientes", "entrada do usuário + catálogo", "#f0f7f2")
+    box(0.8, 4.8, 4.2, 1.1, "2. Ingrediente → SMILES", "PubChem + catálogo curado", "#f0f7f2")
+    box(0.8, 3.2, 4.2, 1.1, "3. Modelo de odor", "ChemBERTa + fingerprint (ensemble)", "#eaf4ee")
+    box(0.8, 1.6, 4.2, 1.1, "4. Perfil de aromas", "top-k com probabilidades", "#eaf4ee")
+
+    box(8.2, 6.4, 4.8, 1.1, "5. Corpus sensorial", "TF-IDF sobre 45 pratos brasileiros", "#fdf6e8")
+    box(8.2, 4.8, 4.8, 1.1, "6. LLM (Qwen 7B)", "HF Inference API · JSON estruturado", "#fdf6e8")
+    box(8.2, 3.2, 4.8, 1.1, "7. Guardrails", "só aromas previstos · fallback", "#fff3e6")
+    box(8.2, 1.6, 4.8, 1.1, "8. Card final", "descrição · perfil · harmonizações", "#f0f7f2")
+
+    arrow((2.9, 6.4), (2.9, 5.9))
+    arrow((2.9, 4.8), (2.9, 4.3))
+    arrow((2.9, 3.2), (2.9, 2.7))
+    arrow((5.0, 2.15), (8.2, 5.35), dashed=True)
+    arrow((10.6, 6.4), (10.6, 5.9))
+    arrow((10.6, 4.8), (10.6, 4.3))
+    arrow((10.6, 3.2), (10.6, 2.7))
+
+    axis.text(6.55, 3.65, "perfil", fontsize=9, color="#b45309", ha="center")
+    axis.text(10.85, 6.15, "contexto", fontsize=9, color="#b45309", ha="left")
+    axis.text(0.8, 7.65, "Olfacto Sommelier — arquitetura", fontsize=17,
+              fontweight="bold", color="#111827", ha="left")
+    figure.tight_layout()
+    figure.savefig(output, bbox_inches="tight", facecolor="white")
+    plt.close(figure)
+
+
 def main() -> int:
     output_dir = Path("docs/images")
     output_dir.mkdir(parents=True, exist_ok=True)

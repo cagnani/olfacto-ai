@@ -30,3 +30,23 @@
 
 - **PT-BR:** https://huggingface.co/blog/SamuelCagnani/olfacto-ai-br (publicado em 03/11/2026 UTC)
 - **EN:** publicar no dia seguinte; depois adicionar o link cruzado nos dois artigos.
+
+## Sommelier (v2)
+
+### PT-BR
+
+- **Título:** Do cheiro ao menu: um agente para descrições sensoriais
+- **Subtítulo:** Como transformar previsões de odor em descrições de menu com LLM, RAG e guardrails — sem deixar o modelo inventar aromas.
+- **Idioma:** Português
+- **Thumbnail:** `docs/images/sommelier-architecture.png`
+- **Tags:** chemistry, olfaction, llm, rag, agents, menu, brazilian-portuguese
+- **Corpo:** `docs/hf-blog-agent-ptbr.md`
+
+### EN
+
+- **Título:** From smell to menu: an agent for sensory descriptions
+- **Subtítulo:** Turning odor predictions into menu copy with an LLM, retrieval and guardrails — without letting the model invent aromas.
+- **Language:** English
+- **Thumbnail:** `docs/images/sommelier-architecture.png`
+- **Tags:** chemistry, olfaction, llm, rag, agents, menu, brazilian-portuguese
+- **Body:** `docs/hf-blog-agent-en.md`
