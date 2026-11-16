@@ -74,7 +74,7 @@ def judge_pairwise(
         option_a=option_a,
         option_b=option_b,
     )
-    for _ in range(2):
+    for attempt in range(3):
         try:
             response = client.chat_completion(
                 model=LLM_MODEL,
@@ -83,9 +83,12 @@ def judge_pairwise(
                 temperature=0.0,
                 response_format={"type": "json_object"},
             )
-            return parse_preference(response.choices[0].message.content or "")
+            preference = parse_preference(response.choices[0].message.content or "")
+            if preference is not None:
+                return preference
         except Exception:
-            time.sleep(1.0)
+            pass
+        time.sleep(2**attempt)
     return None
 
 
@@ -153,7 +156,7 @@ def main() -> int:
 
         winner = judge_pairwise(client, dish, result.aromas, option_a, option_b)
         preference = mapping.get(winner, "empate") if winner in {"A", "B"} else winner
-        time.sleep(0.4)
+        time.sleep(1.0)
 
         rows.append(
             {

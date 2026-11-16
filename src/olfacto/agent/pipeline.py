@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import time
 from collections.abc import Callable
 from dataclasses import asdict, dataclass
 
@@ -35,14 +36,21 @@ def make_inference_llm(client, model: str, max_tokens: int = 500) -> Callable:
     """Adapt an InferenceClient into a callable used by the pipeline."""
 
     def call(messages: list[dict]) -> str:
-        response = client.chat_completion(
-            model=model,
-            messages=messages,
-            max_tokens=max_tokens,
-            temperature=0.3,
-            response_format={"type": "json_object"},
-        )
-        return response.choices[0].message.content or ""
+        last_error: Exception | None = None
+        for attempt in range(3):
+            try:
+                response = client.chat_completion(
+                    model=model,
+                    messages=messages,
+                    max_tokens=max_tokens,
+                    temperature=0.3,
+                    response_format={"type": "json_object"},
+                )
+                return response.choices[0].message.content or ""
+            except Exception as error:
+                last_error = error
+                time.sleep(2**attempt)
+        raise last_error if last_error else RuntimeError("LLM call failed")
 
     return call
 
