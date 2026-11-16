@@ -45,3 +45,16 @@ Em um i7 de 12 threads, cada fold leva cerca de 10 minutos com `max_length=128`.
 
 O script reutiliza `fold{k}/metrics.json` se ele já existir. Se uma sessão cair, rode de
 novo com o mesmo `--output-dir` para continuar de onde parou.
+
+## Notebook do Sommelier
+
+`notebooks/03_sommelier_kaggle.ipynb` traz EDA, o baseline Morgan + regressão logística e a
+inferência do ChemBERTa publicado. Para publicar, sem precisar de `kaggle.json`:
+
+1. Kaggle → **Code** → **New Notebook**.
+2. **File** → **Import Notebook** → selecione o `.ipynb`.
+3. Ative **Internet** em Settings.
+4. **Run All** e depois **Save & Run All**.
+5. Deixe o notebook público.
+
+O baseline usa um split multi-label estratificado e roda em poucos minutos na CPU.
