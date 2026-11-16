@@ -5,27 +5,25 @@ from __future__ import annotations
 from olfacto.agent.pipeline import parse_json_response
 
 
-def parse_judge(text: str) -> int | None:
-    """Extract a 1-5 quality score from a judge response."""
+def parse_preference(text: str) -> str | None:
+    """Extract a pairwise preference from a judge response."""
     data = parse_json_response(text)
     if not isinstance(data, dict):
         return None
 
-    try:
-        score = int(data.get("nota"))
-    except (TypeError, ValueError):
-        return None
-
-    return score if 1 <= score <= 5 else None
+    value = str(data.get("vencedor", "")).strip().lower()
+    if value in {"a", "opção a", "opcao a"}:
+        return "A"
+    if value in {"b", "opção b", "opcao b"}:
+        return "B"
+    if value in {"empate", "tie"}:
+        return "empate"
+    return None
 
 
 def render_eval(metrics: dict) -> str:
     """Render the evaluation summary as Markdown."""
-    delta = metrics["judge_llm_mean"] - metrics["judge_template_mean"]
-    llm_mean = metrics["judge_llm_mean"]
-    llm_std = metrics["judge_llm_std"]
-    template_mean = metrics["judge_template_mean"]
-    template_std = metrics["judge_template_std"]
+    win_rate = metrics["llm_win_rate"]
 
     return f"""# Olfacto Sommelier — avaliação
 
@@ -40,9 +38,10 @@ juiz LLM (1–5), não de um painel humano.
 | Faithfulness da descrição | {metrics["description_faithfulness"]:.1%} |
 | Harmonizações com 3 itens únicos | {metrics["pairing_diversity"]:.1%} |
 | Latência p50 / p95 | {metrics["latency_p50"]:.2f}s / {metrics["latency_p95"]:.2f}s |
-| Nota do juiz — LLM | {llm_mean:.2f} ± {llm_std:.2f} |
-| Nota do juiz — template | {template_mean:.2f} ± {template_std:.2f} |
-| Ganho do LLM | {delta:+.2f} |
+| Vitórias do LLM | {metrics["llm_wins"]} |
+| Vitórias do template | {metrics["template_wins"]} |
+| Empates | {metrics["ties"]} |
+| Taxa de preferência do LLM | {win_rate:.1%} |
 
 ## Como interpretar
 
@@ -51,7 +50,8 @@ juiz LLM (1–5), não de um painel humano.
   próprio prato) aparece no texto. É uma checagem heurística por termos do léxico PT-BR.
 - **Cobertura do LLM:** proporção de pratos em que o LLM respondeu e passou na validação;
   o restante caiu no template determinístico.
-- **Nota do juiz:** avaliação automática de clareza, linguagem sensorial e utilidade.
+- **Preferência:** o juiz compara as duas descrições lado a lado e escolhe a melhor
+  (clareza, linguagem sensorial, coerência e utilidade). A ordem A/B é randomizada.
 
 ## Limitações
 

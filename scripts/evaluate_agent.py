@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import random
 import time
 from pathlib import Path
 
@@ -10,7 +11,7 @@ import numpy as np
 import pandas as pd
 from huggingface_hub import InferenceClient, get_token
 
-from olfacto.agent.evaluate import parse_judge, render_eval
+from olfacto.agent.evaluate import parse_preference, render_eval
 from olfacto.agent.pipeline import SommelierAgent, make_inference_llm
 from olfacto.agent.prompts import fallback_response
 from olfacto.agent.retrieval import SensoryRetriever, load_corpus
@@ -51,30 +52,27 @@ DISHES = [
 MODEL_ID = "SamuelCagnani/olfacto-chemberta-138"
 LLM_MODEL = "Qwen/Qwen2.5-7B-Instruct"
 LLM_PROVIDER = "featherless-ai"
-JUDGE_PROMPT = """Avalie a descrição de menu abaixo de 1 a 5, considerando clareza,
-linguagem sensorial e utilidade para um restaurante.
-
-Escala:
-1 = ruim: genérica ou sem relação com os aromas
-2 = fraca: clara, mas pouco sensorial
-3 = aceitável: clara e coerente, mas básica
-4 = boa: sensorial, específica e útil
-5 = excelente: apetitosa, precisa e pronta para menu
+PAIRWISE_PROMPT = """Qual descrição de menu é melhor para o prato abaixo? Considere
+clareza, linguagem sensorial, coerência com os aromas e utilidade para um restaurante.
 
 Prato: {dish}
 Aromas previstos: {aromas}
 
-Descrição: {description}
+Opção A: {option_a}
+Opção B: {option_b}
 
-Responda somente com JSON: {{"nota": 1, "justificativa": "..."}}
+Responda somente com JSON: {{"vencedor": "A" ou "B" ou "empate", "justificativa": "..."}}
 """
 
 
-def judge(client, dish: str, aromas: list[dict], description: str) -> int | None:
-    prompt = JUDGE_PROMPT.format(
+def judge_pairwise(
+    client, dish: str, aromas: list[dict], option_a: str, option_b: str
+) -> str | None:
+    prompt = PAIRWISE_PROMPT.format(
         dish=dish,
         aromas=", ".join(item["label_pt_br"] for item in aromas),
-        description=description,
+        option_a=option_a,
+        option_b=option_b,
     )
     for _ in range(2):
         try:
@@ -85,9 +83,7 @@ def judge(client, dish: str, aromas: list[dict], description: str) -> int | None
                 temperature=0.0,
                 response_format={"type": "json_object"},
             )
-            score = parse_judge(response.choices[0].message.content or "")
-            if score is not None:
-                return score
+            return parse_preference(response.choices[0].message.content or "")
         except Exception:
             time.sleep(1.0)
     return None
@@ -127,6 +123,7 @@ def main() -> int:
     agent = SommelierAgent(tools, retriever, make_inference_llm(client, LLM_MODEL))
 
     rows = []
+    rng = random.Random(42)
     for dish in DISHES:
         start = time.perf_counter()
         result = agent.generate(dish)
@@ -146,9 +143,16 @@ def main() -> int:
 
         context_pairings = result.context[0]["pairings"] if result.context else []
         template = fallback_response(dish, result.aromas, context_pairings)
-        llm_score = judge(client, dish, result.aromas, result.description)
-        time.sleep(0.4)
-        template_score = judge(client, dish, result.aromas, template["descricao"])
+
+        if rng.random() < 0.5:
+            option_a, option_b = result.description, template["descricao"]
+            mapping = {"A": "llm", "B": "template"}
+        else:
+            option_a, option_b = template["descricao"], result.description
+            mapping = {"A": "template", "B": "llm"}
+
+        winner = judge_pairwise(client, dish, result.aromas, option_a, option_b)
+        preference = mapping.get(winner, "empate") if winner in {"A", "B"} else winner
         time.sleep(0.4)
 
         rows.append(
@@ -160,8 +164,7 @@ def main() -> int:
                 "profile_faithful": profile_faithful,
                 "description_faithful": description_faithful,
                 "pairing_unique": pairing_unique,
-                "judge_llm": llm_score,
-                "judge_template": template_score,
+                "preference": preference,
                 "aromas": [item["label_pt_br"] for item in result.aromas],
                 "description": result.description,
                 "template_description": template["descricao"],
@@ -170,14 +173,16 @@ def main() -> int:
         print(
             f"{dish:<22} source={result.source:<8} "
             f"faithful={description_faithful} "
-            f"judge={llm_score}/{template_score} "
+            f"preference={preference} "
             f"{latency:.2f}s",
             flush=True,
         )
 
     frame = pd.DataFrame(rows)
-    llm_scores = frame["judge_llm"].dropna().astype(float)
-    template_scores = frame["judge_template"].dropna().astype(float)
+    llm_wins = int((frame["preference"] == "llm").sum())
+    template_wins = int((frame["preference"] == "template").sum())
+    ties = int((frame["preference"] == "empate").sum())
+    decisive = llm_wins + template_wins
     latencies = frame["latency_s"].to_numpy()
     p50, p95 = np.percentile(latencies, [50, 95])
 
@@ -189,17 +194,11 @@ def main() -> int:
         "pairing_diversity": float(frame["pairing_unique"].mean()),
         "latency_p50": float(p50),
         "latency_p95": float(p95),
-        "judge_llm_mean": float(llm_scores.mean()) if len(llm_scores) else 0.0,
-        "judge_llm_std": float(llm_scores.std()) if len(llm_scores) > 1 else 0.0,
-        "judge_template_mean": float(template_scores.mean())
-        if len(template_scores)
-        else 0.0,
-        "judge_template_std": float(template_scores.std())
-        if len(template_scores) > 1
-        else 0.0,
-        "judge_pairs": int(
-            ((frame["judge_llm"].notna()) & (frame["judge_template"].notna())).sum()
-        ),
+        "llm_wins": llm_wins,
+        "template_wins": template_wins,
+        "ties": ties,
+        "llm_win_rate": float(llm_wins / decisive) if decisive else 0.0,
+        "judge_pairs": decisive + ties,
         "fallback_count": int((frame["source"] == "fallback").sum()),
     }
 
