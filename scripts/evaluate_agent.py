@@ -61,7 +61,8 @@ Aromas previstos: {aromas}
 Opção A: {option_a}
 Opção B: {option_b}
 
-Responda somente com JSON: {{"vencedor": "A" ou "B" ou "empate", "justificativa": "..."}}
+Responda somente com JSON:
+{{"vencedor": "A" ou "B" ou "empate", "justificativa": "até 20 palavras"}}
 """
 
 
@@ -79,7 +80,7 @@ def judge_pairwise(
             response = client.chat_completion(
                 model=LLM_MODEL,
                 messages=[{"role": "user", "content": prompt}],
-                max_tokens=120,
+                max_tokens=250,
                 temperature=0.0,
                 response_format={"type": "json_object"},
             )
