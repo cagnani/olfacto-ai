@@ -28,6 +28,7 @@ Demo: [Olfacto Space](https://huggingface.co/spaces/SamuelCagnani/olfacto-live).
 Artigos: [PT-BR no Hugging Face](https://huggingface.co/blog/SamuelCagnani/olfacto-ai-br) ·
 [PT-BR](https://github.com/cagnani/olfacto-ai/blob/main/docs/article-ptbr.md) ·
 [EN](https://github.com/cagnani/olfacto-ai/blob/main/docs/article-en.md).
+Agente: [Olfacto Sommelier](https://huggingface.co/spaces/SamuelCagnani/olfacto-agent).
 
 ## Uso pretendido
 

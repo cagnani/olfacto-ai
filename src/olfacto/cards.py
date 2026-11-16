@@ -83,6 +83,7 @@ Demo: [Olfacto Space](https://huggingface.co/spaces/SamuelCagnani/olfacto-live).
 Artigos: [PT-BR no Hugging Face](https://huggingface.co/blog/SamuelCagnani/olfacto-ai-br) ·
 [PT-BR](https://github.com/cagnani/olfacto-ai/blob/main/docs/article-ptbr.md) ·
 [EN](https://github.com/cagnani/olfacto-ai/blob/main/docs/article-en.md).
+Agente: [Olfacto Sommelier](https://huggingface.co/spaces/SamuelCagnani/olfacto-agent).
 
 ## Uso pretendido
 
@@ -193,6 +194,7 @@ Dataset curado para predição de odor molecular, com {n_molecules} moléculas, 
 rótulos binários, léxico em português e uma galeria de ingredientes brasileiros.
 
 Demo: [Olfacto Space](https://huggingface.co/spaces/SamuelCagnani/olfacto-live).
+Agente: [Olfacto Sommelier](https://huggingface.co/spaces/SamuelCagnani/olfacto-agent).
 Artigo: [PT-BR no Hugging Face](https://huggingface.co/blog/SamuelCagnani/olfacto-ai-br).
 Código: [github.com/cagnani/olfacto-ai](https://github.com/cagnani/olfacto-ai).
 
@@ -210,6 +212,10 @@ Perception*, Science.
 | `curated_GS_LF_merged_4983.csv` | SMILES, descritores textuais e 138 rótulos binários |
 | `odor_labels_ptbr.json` | tradução PT-BR e família olfativa dos 138 rótulos |
 | `brazilian_ingredients.csv` | ~40 ingredientes brasileiros e moléculas marcantes |
+| `agent/sommelier_ingredients.csv` | 38 ingredientes salgados e moléculas marcantes |
+| `agent/dish_ingredients.json` | 45 pratos em 8 categorias e seus ingredientes |
+| `agent/sensory_corpus.jsonl` | 45 descrições sensoriais originais |
+| `agent/eval_results.csv` | benchmark de 20 pratos do agente |
 
 ## Esquema
 

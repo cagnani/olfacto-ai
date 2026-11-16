@@ -10,6 +10,7 @@ inclui um léxico em português, uma galeria de ingredientes brasileiros e um ex
 visual do espaço olfativo.
 
 Artigo técnico: [PT-BR no Hugging Face](https://huggingface.co/blog/SamuelCagnani/olfacto-ai-br) · [PT-BR](docs/article-ptbr.md) · [EN](docs/article-en.md).
+Artigo do agente: [PT-BR](docs/hf-blog-agent-ptbr.md) · [EN](docs/hf-blog-agent-en.md) · [Avaliação](docs/agent-eval.md).
 
 | Artefato | Link |
 |---|---|
@@ -18,6 +19,7 @@ Artigo técnico: [PT-BR no Hugging Face](https://huggingface.co/blog/SamuelCagna
 | Demo interativo | [Space Olfacto](https://huggingface.co/spaces/SamuelCagnani/olfacto-live) |
 | Showcase estático | [Space estático](https://huggingface.co/spaces/SamuelCagnani/olfacto) |
 | Artigo (PT-BR) | [Ensinando uma IA a sentir cheiro](https://huggingface.co/blog/SamuelCagnani/olfacto-ai-br) |
+| Sommelier | [Space Olfacto Sommelier](https://huggingface.co/spaces/SamuelCagnani/olfacto-agent) |
 
 ## Como funciona
 
@@ -74,6 +76,22 @@ sulfurosas (alho 0.971, cebola 0.967) e mal em frutas finas (morango 0.461, uva 
 
 A comparação com o OpenPOM é uma ablation, não uma disputa de arquitetura. Tabela completa
 em [`docs/results.md`](docs/results.md).
+
+## Olfacto Sommelier
+
+O agente transforma um prato em descrição de menu usando o modelo de odor como ferramenta:
+ingredientes → SMILES → perfil de aromas → RAG → LLM com guardrails. O LLM não decide
+aromas; ele recebe a lista prevista e escreve a partir dela.
+
+| Métrica | Valor |
+|---|---|
+| Pratos no corpus | 45 em 8 categorias |
+| Cobertura do LLM | 95% |
+| Fidelidade do perfil | 100% |
+| Preferência sobre o template | 75% (15/20) |
+| Latência p50 | 2,9s |
+
+[Demo](https://huggingface.co/spaces/SamuelCagnani/olfacto-agent) · [Avaliação](docs/agent-eval.md) · [Artigo PT](docs/hf-blog-agent-ptbr.md) · [Artigo EN](docs/hf-blog-agent-en.md)
 
 ## Reproduzir o treino
 
