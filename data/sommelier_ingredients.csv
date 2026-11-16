@@ -1,0 +1,39 @@
+name_pt,name_en,category,pubchem_name,smiles,note
+Arroz,Rice,carboidrato,2-Acetyl-1-pyrroline,CC(=O)C1=NCCC1,"torrado, pipoca"
+Feijão,Beans,leguminosa,Methional,CSCCC=O,"cozido, terroso"
+Carne bovina,Beef,proteína,2-Methyl-3-furanthiol,CC1=C(C=CO1)S,"carne, torrado"
+Frango,Chicken,proteína,"2,4-Decadienal",CCCCC/C=C/C=C/C=O,"gorduroso, assado"
+Peixe,Fish,proteína,Trimethylamine,CN(C)C,peixe
+Camarão,Shrimp,proteína,"2,6-Dimethylpyrazine",CC1=CN=CC(=N1)C,"torrado, camarão"
+Queijo,Cheese,laticínio,Butyric acid,CCCC(=O)O,queijo
+Manteiga,Butter,laticínio,Diacetyl,CC(=O)C(=O)C,amanteigado
+Tomate,Tomato,vegetal,(Z)-3-Hexenal,CC/C=C\CC=O,"verde, tomate"
+Pão,Bread,carboidrato,Furfural,C1=COC(=C1)C=O,"torrado, pão"
+Shoyu,Soy sauce,tempero,Sotolon,CC1C(=C(C(=O)O1)O)C,"caramelo, curry"
+Dendê,Palm oil,gordura,beta-Ionone,CC1=C(C(CCC1)(C)C)/C=C/C(=O)C,"floral, óleo"
+Leite de coco,Coconut milk,gordura,gamma-Nonalactone,CCCCCC1CCC(=O)O1,"coco, cremoso"
+Pimentão,Bell pepper,vegetal,2-Isobutyl-3-methoxypyrazine,CC(C)CC1=NC=CN=C1OC,"verde, pimentão"
+Cenoura,Carrot,vegetal,2-Nonenal,CCCCCC/C=C/C=O,"verde, cenoura"
+Cebolinha,Chives,tempero,Dimethyl trisulfide,CSSSC,"sulfuroso, verde"
+Salsinha,Parsley,erva,Myrcene,CC(=CCCC(=C)C=C)C,herbal
+Orégano,Oregano,erva,Carvacrol,CC1=C(C=C(C=C1)C(C)C)O,"especiado, herbal"
+Louro,Bay leaf,erva,"1,8-Cineole",CC1(C2CCC(O1)(CC2)C)C,"eucalipto, herbal"
+Azeite,Olive oil,gordura,Hexanal,CCCCCC=O,"verde, oleoso"
+Morango,Strawberry,fruta,Furaneol,CC1C(=O)C(=C(O1)C)O,"doce, caramelo"
+Banana,Banana,fruta,Isoamyl acetate,CC(C)CCOC(=O)C,banana
+Batata,Potato,carboidrato,Methional,CSCCC=O,"cozido, terroso"
+Mandioca,Cassava,carboidrato,2-Methylbutanal,CCC(C)C=O,"malte, terroso"
+Ovo,Egg,proteína,Dimethyl trisulfide,CSSSC,sulfuroso
+Bacon,Bacon,proteína,Guaiacol,COC1=CC=CC=C1O,defumado
+Milho,Corn,carboidrato,2-Acetyl-1-pyrroline,CC(=O)C1=NCCC1,pipoca
+Ervilha,Peas,leguminosa,2-Isobutyl-3-methoxypyrazine,CC(C)CC1=NC=CN=C1OC,verde
+Abacate,Avocado,fruta,Hexanal,CCCCCC=O,"verde, oleoso"
+Gengibre,Ginger,especiaria,Gingerol,CCCCC[C@@H](CC(=O)CCC1=CC(=C(C=C1)O)OC)O,picante
+Cúrcuma,Turmeric,especiaria,Curcumin,COC1=C(C=CC(=C1)/C=C/C(=O)CC(=O)/C=C/C2=CC(=C(C=C2)O)OC)O,"terroso, especiado"
+Pimenta-malagueta,Chili,especiaria,Capsaicin,CC(C)/C=C/CCCCC(=O)NCC1=CC(=C(C=C1)O)OC,picante
+Alface,Lettuce,vegetal,Hexanal,CCCCCC=O,verde
+Pepino,Cucumber,vegetal,"(E,Z)-2,6-Nonadienal",CC/C=C\CC/C=C/C=O,"verde, pepino"
+Manjerona,Marjoram,erva,gamma-Terpinene,CC1=CCC(=CC1)C(C)C,herbal
+Alho-poró,Leek,tempero,Dimethyl trisulfide,CSSSC,sulfuroso
+Noz-moscada,Nutmeg,especiaria,Sabinene,CC(C)C12CCC(=C)C1C2,especiado
+Cominho,Cumin,especiaria,Cuminaldehyde,CC(C)C1=CC=C(C=C1)C=O,"especiado, terroso"

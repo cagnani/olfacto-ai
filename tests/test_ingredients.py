@@ -12,6 +12,7 @@ from olfacto.ingredients import (
 
 ROOT = Path(__file__).resolve().parents[1]
 CATALOG_PATH = ROOT / "data" / "brazilian_ingredients.csv"
+SOMMELIER_CATALOG_PATH = ROOT / "data" / "sommelier_ingredients.csv"
 
 
 def test_ingredient_catalog_schema():
@@ -73,3 +74,12 @@ def test_validate_rejects_duplicate_names():
 
     with pytest.raises(ValueError, match="duplicate"):
         validate_ingredients(pd.DataFrame([row, row]))
+
+
+def test_sommelier_catalog_is_complete():
+    df = load_ingredients(SOMMELIER_CATALOG_PATH)
+
+    validate_ingredients(df)
+    assert len(df) >= 30
+    assert list(df.columns) == INGREDIENT_COLUMNS
+    assert df["category"].nunique() >= 8
