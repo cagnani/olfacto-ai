@@ -77,7 +77,7 @@ def call_llm(messages: list[dict]) -> str:
     return LLM_CALL(messages)
 
 
-AGENT = SommelierAgent(TOOLS, RETRIEVER, call_llm, LEXICON_PATH)
+AGENT = SommelierAgent(TOOLS, RETRIEVER, call_llm)
 
 
 def describe(dish: str, extra: str, top_k: float):

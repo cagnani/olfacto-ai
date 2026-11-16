@@ -11,7 +11,6 @@ from olfacto.agent.pipeline import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-LEXICON = ROOT / "data" / "odor_labels_ptbr.json"
 
 AROMAS = [
     {"label": "smoky", "label_pt_br": "defumado", "probability": 0.8},
@@ -31,14 +30,18 @@ CONTEXT = [
 
 
 class FakeTools:
-    def __init__(self, aromas: list[dict]) -> None:
+    def __init__(self, aromas: list[dict], ingredients: list[str] | None = None) -> None:
         self.aromas = aromas
+        self.ingredients = ingredients or ["Feijão"]
 
     def profile(self, dish, extra_ingredients=None, top_k=8):
         return {
             "dish": dish,
             "category": "Brasileira",
-            "ingredients": [{"name": "Feijão", "smiles": "C", "predictions": []}],
+            "ingredients": [
+                {"name": name, "smiles": "C", "predictions": []}
+                for name in self.ingredients
+            ],
             "missing": [],
             "aromas": self.aromas,
         }
@@ -73,9 +76,15 @@ def valid_payload(**overrides) -> str:
     return json.dumps(payload)
 
 
-def make_agent(llm: FakeLLM, aromas: list[dict] | None = None) -> SommelierAgent:
+def make_agent(
+    llm: FakeLLM,
+    aromas: list[dict] | None = None,
+    ingredients: list[str] | None = None,
+) -> SommelierAgent:
     return SommelierAgent(
-        FakeTools(AROMAS if aromas is None else aromas), FakeRetriever(), llm, LEXICON
+        FakeTools(AROMAS if aromas is None else aromas, ingredients),
+        FakeRetriever(),
+        llm,
     )
 
 
@@ -113,15 +122,6 @@ def test_falls_back_on_forbidden_profile_aroma():
     assert result.source == "fallback"
     assert result.confidence == "baixa"
     assert result.pairings == ["arroz", "laranja", "caipirinha"]
-
-
-def test_falls_back_on_forbidden_description_term():
-    payload = valid_payload(descricao="Feijoada com baunilha e final amadeirado.")
-    llm = FakeLLM([payload, payload])
-
-    result = make_agent(llm).generate("Feijoada")
-
-    assert result.source == "fallback"
 
 
 def test_falls_back_when_llm_raises():

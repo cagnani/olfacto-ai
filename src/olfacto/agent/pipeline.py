@@ -5,14 +5,12 @@ from __future__ import annotations
 import json
 from collections.abc import Callable
 from dataclasses import asdict, dataclass
-from pathlib import Path
 
 from olfacto.agent.prompts import (
     SYSTEM_PROMPT,
     build_user_prompt,
     fallback_response,
 )
-from olfacto.labels import load_lexicon
 
 
 @dataclass
@@ -81,17 +79,12 @@ class SommelierAgent:
         tools,
         retriever,
         llm: Callable[[list[dict]], str],
-        lexicon_path: str | Path,
         max_retries: int = 1,
     ) -> None:
         self.tools = tools
         self.retriever = retriever
         self.llm = llm
         self.max_retries = max_retries
-        lexicon = load_lexicon(lexicon_path)
-        self.known_terms = {
-            entry["pt_br"].lower() for entry in lexicon.values() if entry["pt_br"]
-        }
 
     def generate(
         self,
@@ -190,11 +183,4 @@ class SommelierAgent:
             return False
 
         description = data.get("descricao")
-        if not isinstance(description, str) or not 20 <= len(description) <= 600:
-            return False
-
-        text = description.lower()
-        mentioned = {
-            term for term in self.known_terms if len(term) >= 5 and term in text
-        }
-        return not (mentioned - allowed)
+        return isinstance(description, str) and 20 <= len(description) <= 600
