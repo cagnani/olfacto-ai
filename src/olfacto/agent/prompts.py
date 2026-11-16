@@ -9,6 +9,7 @@ Regras:
 - Não faça alegações de saúde, alergênicos ou segurança alimentar.
 - Se a confiança for baixa, diga isso de forma simples.
 - Escreva em português do Brasil, com no máximo 80 palavras na descrição.
+- Use linguagem sensorial e apetitosa, com textura e aroma, sem clichês.
 - Nas harmonizações, varie as categorias: acompanhamento, bebida e finalização.
 - Não repita bebidas alcoólicas nas harmonizações.
 - Responda somente com JSON válido, sem texto fora do JSON.

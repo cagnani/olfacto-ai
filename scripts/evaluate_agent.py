@@ -18,6 +18,13 @@ from olfacto.agent.tools import OdorTools
 from olfacto.ensemble import EnsemblePredictor
 from olfacto.labels import load_lexicon
 
+GENERIC_TERMS = {
+    "fresco", "doce", "amargo", "ácido", "salgado", "verde", "floral", "frutado",
+    "amadeirado", "especiado", "herbal", "oleoso", "cremoso", "quente", "seco",
+    "limpo", "natural", "suave", "intenso", "equilibrado", "leve", "refrescante",
+    "delicado", "marcante", "pronunciado", "agradável",
+}
+
 DISHES = [
     "Feijoada",
     "Moqueca de peixe",
@@ -46,6 +53,13 @@ LLM_MODEL = "Qwen/Qwen2.5-7B-Instruct"
 LLM_PROVIDER = "featherless-ai"
 JUDGE_PROMPT = """Avalie a descrição de menu abaixo de 1 a 5, considerando clareza,
 linguagem sensorial e utilidade para um restaurante.
+
+Escala:
+1 = ruim: genérica ou sem relação com os aromas
+2 = fraca: clara, mas pouco sensorial
+3 = aceitável: clara e coerente, mas básica
+4 = boa: sensorial, específica e útil
+5 = excelente: apetitosa, precisa e pronta para menu
 
 Prato: {dish}
 Aromas previstos: {aromas}
@@ -84,7 +98,7 @@ def unexpected_terms(
 ) -> set[str]:
     known = {entry["pt_br"].lower() for entry in lexicon.values() if entry["pt_br"]}
     mentioned = {term for term in known if len(term) >= 5 and term in text.lower()}
-    return mentioned - allowed - {item.lower() for item in ingredients}
+    return mentioned - allowed - {item.lower() for item in ingredients} - GENERIC_TERMS
 
 
 def main() -> int:
@@ -148,6 +162,7 @@ def main() -> int:
                 "pairing_unique": pairing_unique,
                 "judge_llm": llm_score,
                 "judge_template": template_score,
+                "aromas": [item["label_pt_br"] for item in result.aromas],
                 "description": result.description,
                 "template_description": template["descricao"],
             }
