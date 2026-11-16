@@ -1,7 +1,7 @@
 # Olfacto Sommelier — avaliação
 
-Benchmark de 20 pratos em 8 categorias. As notas de qualidade são de um
-juiz LLM (1–5), não de um painel humano.
+Benchmark de 20 pratos em 8 categorias. A preferência é julgada por um
+LLM, não por um painel humano.
 
 | Métrica | Valor |
 |---|---|
