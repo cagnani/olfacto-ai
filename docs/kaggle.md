@@ -4,6 +4,10 @@ O `ChemBERTa-77M-MLM` é pequeno (3,5M parâmetros com a cabeça de classificaç
 treino completo roda tanto em GPU T4 gratuita quanto em CPU. A GPU é recomendada para a
 validação cruzada de 5 folds com `max_length=128`.
 
+Notebook de treino publicado: https://www.kaggle.com/code/cagnani/olfacto-ai
+
+No run de referência: OOF macro 0,7520 e micro 0,8404, com 138 rótulos.
+
 ## Opção 1 — notebook
 
 1. Crie um notebook novo em [kaggle.com/code](https://www.kaggle.com/code).
